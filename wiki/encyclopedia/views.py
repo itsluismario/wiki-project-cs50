@@ -41,10 +41,10 @@ def random_page(request):
     # random no. from 0 to 4
     r = random.randint(0,len(pagelist)-1)
     print (r)
-    #Depending on the number, it will give a element of the list
+    # Depending on the number, it will give a element of the list
     title = pagelist[r]
-    #redirect(what url want to go, name of the url)
-    #path("wiki/<str:title>", views.wiki, name="wiki")
+    # redirect(what url want to go, name of the url)
+    # path("wiki/<str:title>", views.wiki, name="wiki")
     return redirect(wiki, title=title)
 
 # Search
@@ -56,20 +56,42 @@ def search(request):
         term = request.POST['q']
         print(term)
         searchlist = []
-        #pagelist = ['CSS', 'Django', 'Git', 'HTML', 'Markdown', 'Python', 'Test']
+        # pagelist = ['CSS', 'Django', 'Git', 'HTML', 'Markdown', 'Python', 'Test']
         for page in pagelist:
-            #re.search(lo que buscas, con lo que que tienes)
+            # re.search(lo que buscas, con lo que que tienes)
             if re.match(term.lower(), page.lower()):
-                #the word is appended to the list
+                # the word is appended to the list
                 searchlist.append(page)
                 print(searchlist)
-            #if the list is empty
+            # if the list is empty
         if len(searchlist) == 0:
                 # send the request to error.html and post that message
                 return render(request, "encyclopedia/error.html", {
                     'error_message': f'No results found for \'{term}\''
                 })
-    #Send the searchlist to search.html
+    # Send the searchlist to search.html
     return render (request, "encyclopedia/search.html", {
         'entries': searchlist
+    })
+
+
+def add_page(request):
+    # It checks
+    if request.method == 'POST':
+        # Save the data from the forms in title and content variables 
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+
+        # if there is a dm with the same title send TRUE
+        if title in pagelist:
+            return render(request, "encyclopedia/add.html",{
+                'available': True
+            })
+        else:
+            # Enter to util.py // function save_entry
+            util.save_entry(title, content)
+            return redirect(wiki, title=title)
+
+    return render(request, "encyclopedia/add.html",{
+        'available': False
     })

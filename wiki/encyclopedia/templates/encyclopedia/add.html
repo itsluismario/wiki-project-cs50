@@ -6,9 +6,13 @@ Encyclopedia
 
 {% block body %}
 
-<div class="form-group">
-    <label for="exampleFormControlTextarea1">Example textarea</label>
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-</div>
+<form method="POST">
+  {% csrf_token %}
+  <input name="title" type="text" class="form-control" placeholder="Title"
+  style="width: 80%; margin-top: 20px" autocomplete="off" required>
+  <textarea name="content" class="form-control" placeholder="Enter content in markdown. If an existing entry with the same title already exists, it is replaced."
+  style="width: 80%; margin-top: 20px; height: 30em;" autocomplete="off" required></textarea>
+  <button type="submit" class="btn btn-primary" style="margin-top: 20px">Submit</button>
+</form>
 
 {% endblock %}
