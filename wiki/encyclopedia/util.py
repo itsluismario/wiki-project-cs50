@@ -8,7 +8,14 @@ def list_entries():
     """
     Returns a list of all names of encyclopedia entries.
     """
-    _, filenames = default_storage.listdir("entries")
+    _,filenames = default_storage.listdir("entries")
+    print(_)
+    print(filenames)
+    """
+    Elimante the .md from the elements (Before: CSS.md --> After: CSS)
+    And make an ordened list
+    """
+    #list()= crea una lista // sorted= ordena  // re.sub(pattern, repl, string)  Replace "\.md$" with ""
     return list(sorted(re.sub(r"\.md$", "", filename)
                 for filename in filenames if filename.endswith(".md")))
 

@@ -1,0 +1,13 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+Encyclopedia | {{title}} <!-- The title is showed in the tab-->
+{% endblock %}
+
+{% block body %}
+
+{{ content|safe }} <!-- The safe does not show the raw HTML -->
+<a href="">
+    <button type="submit" class="btn btn-outline-primary" style="margin-top: 25px;">Edit page</button>
+</a>
+{% endblock %}
