@@ -40,7 +40,6 @@ def random_page(request):
     # if there is no -1, it could get until 5. And there is no element in the number 5.
     # random no. from 0 to 4
     r = random.randint(0,len(pagelist)-1)
-    print (r)
     # Depending on the number, it will give a element of the list
     title = pagelist[r]
     # redirect(what url want to go, name of the url)
@@ -54,7 +53,6 @@ def search(request):
     if request.method == "POST":
         # the variable is q and the value would be what the user type
         term = request.POST['q']
-        print(term)
         searchlist = []
         # pagelist = ['CSS', 'Django', 'Git', 'HTML', 'Markdown', 'Python', 'Test']
         for page in pagelist:
@@ -62,8 +60,7 @@ def search(request):
             if re.match(term.lower(), page.lower()):
                 # the word is appended to the list
                 searchlist.append(page)
-                print(searchlist)
-            # if the list is empty
+        # if the list is empty
         if len(searchlist) == 0:
                 # send the request to error.html and post that message
                 return render(request, "encyclopedia/error.html", {
@@ -74,11 +71,12 @@ def search(request):
         'entries': searchlist
     })
 
+# Add page
 
 def add_page(request):
     # It checks
     if request.method == 'POST':
-        # Save the data from the forms in title and content variables 
+        # Save the data from the forms in title and content variables
         title = request.POST.get('title')
         content = request.POST.get('content')
 
@@ -95,3 +93,30 @@ def add_page(request):
     return render(request, "encyclopedia/add.html",{
         'available': False
     })
+
+# Edit
+
+def edit_page(request, title):
+    pagecontent = util.get_entry(title)
+    if request.method == 'GET':
+        return render(request, "encyclopedia/edit.html",{
+            'title': title,
+            'content': pagecontent
+        })
+
+    if request.method == 'POST':
+        pagetitle = request.POST.get('newtitle')
+        pagecontent = request.POST.get('newcontent')
+        util.save_entry(pagetitle, pagecontent)
+        return redirect(wiki, title=pagetitle)
+
+# Delete page
+
+def delete_page(request, title):
+
+    if request.method == 'GET':
+
+        util.delete_entry(title)
+        return render(request, "encyclopedia/index.html", {
+            "entries": util.list_entries()
+        })

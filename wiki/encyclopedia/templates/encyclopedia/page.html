@@ -7,7 +7,19 @@ Encyclopedia | {{title}} <!-- The title is showed in the tab-->
 {% block body %}
 
 {{ content|safe }} <!-- The safe does not show the raw HTML -->
-<a href="">
-    <button type="submit" class="btn btn-outline-primary" style="margin-top: 25px;">Edit page</button>
-</a>
+<div  style="display: flex">
+  <a href="{% url 'edit_page' title %}">
+      <button type="submit" class="btn btn-outline-primary"
+      style="margin-top: 25px;">Edit page</button>
+  </a>
+
+  <form action="{% url 'delete_page' title %}" method="GET">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-outline-danger"
+    style="margin-top: 25px; margin-left: 10px ;padding-left: 25px;
+    padding-right: 25px">Delete</button>
+  </form>
+</div>
+
+
 {% endblock %}

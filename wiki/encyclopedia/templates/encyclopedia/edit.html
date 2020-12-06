@@ -1,0 +1,25 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+Encyclopedia
+{% endblock %}
+
+{% block body %}
+{% if available == True %}
+<div class="alert alert-warning" role="alert">
+  There is already a markdown with same title!
+</div>
+{% endif %}
+
+<div class="newpage">
+  <form method="POST">
+    {% csrf_token %}
+    <textarea rows="1" cols="80" name="newtitle" type="text" class="form-control"
+    style="width: 80%; margin-top: 20px" autocomplete="off" placeholder="{{title}}" required>{{title}}</textarea>
+    <textarea name="newcontent" class="form-control" style="width: 80%; margin-top: 20px; height: 30em;" autocomplete="off" required>
+    {{content}}
+    </textarea>
+    <button type="submit" class="btn btn-primary" style="margin-top: 20px">Submit</button>
+  </form>
+</div>
+{% endblock %}

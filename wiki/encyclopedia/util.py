@@ -4,13 +4,12 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
 
+
 def list_entries():
     """
     Returns a list of all names of encyclopedia entries.
     """
     _,filenames = default_storage.listdir("entries")
-    print(_)
-    print(filenames)
     """
     Elimante the .md from the elements (Before: CSS.md --> After: CSS)
     And make an ordened list
@@ -34,7 +33,7 @@ def save_entry(title, content):
 
 def get_entry(title):
     """
-    Retrieves an encyclopedia entry by its title. If no such
+    Retrieves(recover) an encyclopedia entry by its title. If no such
     entry exists, the function returns None.
     """
     try:
@@ -42,3 +41,12 @@ def get_entry(title):
         return f.read().decode("utf-8")
     except FileNotFoundError:
         return None
+
+def delete_entry(title):
+    """
+    Deletes an encyclopedia entry by its title. If no such
+    entry exists, the function returns None.
+    """
+    filename = f"entries/{title}.md"
+    if default_storage.exists(filename):
+        default_storage.delete(filename)
